@@ -5,8 +5,8 @@
                 <a-tab-pane key="1" tab="Настройка">
                     <Settings/>
                 </a-tab-pane>
-                <a-tab-pane key="2" tab="Прогресс" disabled>
-                    <Settings/>
+                <a-tab-pane key="2" tab="Прогресс">
+                    <Progress/>
                 </a-tab-pane>
             </a-tabs>
         </a-spin>
@@ -15,10 +15,11 @@
 
 <script>
 import Settings from "./components/Settings";
+import Progress from "./components/Progress";
 
 export default {
     name: 'Main',
-    components: {Settings},
+    components: {Settings, Progress},
     data: function () {
         return {
             loading: false,

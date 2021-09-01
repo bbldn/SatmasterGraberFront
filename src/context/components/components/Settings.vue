@@ -53,7 +53,7 @@ export default {
     methods: {
         handleSubmit: function (e) {
             e.preventDefault();
-        }
+        },
     }
 }
 </script>
