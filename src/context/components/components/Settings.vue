@@ -1,5 +1,5 @@
 <template>
-    <a-form :form="form">
+    <a-form :form="form" @submit="handleSubmit">
         <a-form-item label="Ссылка на категорию satmaster.kiev.ua">
             <!--suppress HtmlUnknownAttribute -->
             <a-input
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { Form } from 'ant-design-vue';
+import {Form} from 'ant-design-vue';
 import Vue from "vue";
 
 Vue.use(Form);
@@ -49,6 +49,11 @@ export default {
             categoryId: 1,
             imagePath: 'catalog/prod/graber/',
         });
+    },
+    methods: {
+        handleSubmit: function (e) {
+            e.preventDefault();
+        }
     }
 }
 </script>
