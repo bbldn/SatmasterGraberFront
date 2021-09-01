@@ -32,7 +32,7 @@
 
 <script>
 export default {
-    name: "Form",
+    name: "Settings",
     data: function () {
         return {
             form: {
