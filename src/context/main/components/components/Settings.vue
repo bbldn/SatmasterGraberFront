@@ -33,6 +33,7 @@
 <script>
 import {Form} from 'ant-design-vue';
 import Vue from "vue";
+import axios from "axios";
 
 Vue.use(Form);
 
@@ -45,14 +46,26 @@ export default {
     },
     mounted: function () {
         this.form.setFieldsValue({
-            url: '',
             categoryId: 1,
+            url: undefined,
             imagePath: 'catalog/prod/graber/',
         });
     },
     methods: {
         handleSubmit: function (e) {
             e.preventDefault();
+            this.form.validateFields(async (err, values) => {
+                if (err) {
+                    return;
+                }
+
+                const data = {
+                    method: 'startProcess',
+                    params: [values.url, values.categoryId, values.imagePath],
+                };
+
+                await axios.post('/api', data);
+            });
         },
     }
 }

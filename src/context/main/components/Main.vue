@@ -16,14 +16,38 @@
 <script>
 import Settings from "./components/Settings";
 import Progress from "./components/Progress";
+import client from "../services/client";
 
 export default {
     name: 'Main',
     components: {Settings, Progress},
     data: function () {
         return {
-            loading: false,
+            loading: true,
+            state: {step: 'not-running'},
         };
+    },
+    created: function () {
+        this.loadState();
+    },
+    methods: {
+        updateState: function (state) {
+            this.state = state;
+            if ('initialization' === state.step && 'process' === state.step) {
+                setTimeout(this.loadState, 1000);
+            }
+        },
+        loadState: async function () {
+            const {data} = await client.getProcessState();
+            this.loading = false;
+            if (null !== data.error) {
+                console.log(data.error);
+
+                return;
+            }
+
+            this.updateState(data.result);
+        }
     }
 }
 </script>
