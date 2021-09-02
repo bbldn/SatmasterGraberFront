@@ -33,7 +33,7 @@
 <script>
 import {Form} from 'ant-design-vue';
 import Vue from "vue";
-import axios from "axios";
+import client from "app/context/main/services/client";
 
 Vue.use(Form);
 
@@ -59,12 +59,7 @@ export default {
                     return;
                 }
 
-                const data = {
-                    method: 'startProcess',
-                    params: [values.url, values.categoryId, values.imagePath],
-                };
-
-                await axios.post('/api', data);
+                await client.startProcess(values.url, values.categoryId, values.imagePath);
             });
         },
     }

@@ -14,9 +14,10 @@
 </template>
 
 <script>
-import Settings from "./components/Settings";
-import Progress from "./components/Progress";
-import client from "../services/client";
+
+import client from "app/context/main/services/client";
+import Settings from "app/context/main/components/components/Settings";
+import Progress from "app/context/main/components/components/Progress";
 
 export default {
     name: 'Main',
