@@ -4,6 +4,7 @@
             <a-progress
                 type="circle"
                 :width="150"
+                :status="stateC.status"
                 :percent="stateC.percent"
             />
             <div>{{ stateC.message }}</div>
@@ -36,9 +37,36 @@ export default {
     },
     computed: {
         stateC: function () {
+            let status;
+            let percent;
+
+            switch (this.state.step) {
+                case 'not-running':
+                    percent = 0;
+                    status = 'normal';
+                    break;
+                case 'initialization':
+                    percent = 0;
+                    status = 'active';
+                    break;
+                case 'process':
+                    percent = this.state.percent;
+                    status = 'active';
+                    break;
+                case 'finish':
+                    percent = 100;
+                    status = 'success';
+                    break;
+                default:
+                    percent = 0;
+                    status = 'normal';
+                    break;
+            }
+
             return {
+                status: status,
+                percent: percent,
                 url: this.state.url,
-                percent: this.state.percent ?? 0,
                 message: this.state.message ?? '',
             };
         },
