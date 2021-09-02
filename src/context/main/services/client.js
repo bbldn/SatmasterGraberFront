@@ -1,12 +1,18 @@
 const axios = require('axios');
 
+const getResponse = async function (data) {
+    const response = await axios.post('/api', data);
+
+    return response.data;
+}
+
 module.exports = {
     getProcessState: async function () {
-        return await axios.post('/api', {method: 'getProcessState'});
+        return await getResponse({method: 'getProcessState'});
     },
     startProcess: async function (url, categoryId, imagesPath) {
         const params = [url, categoryId, imagesPath];
 
-        return await axios.post('/api', {method: 'startProcess', params: params});
+        return await getResponse({method: 'startProcess', params: params});
     },
 };

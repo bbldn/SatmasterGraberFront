@@ -39,6 +39,11 @@ Vue.use(Form);
 
 export default {
     name: "Settings",
+    props: {
+        state: Object,
+        updateState: Function,
+        updateError: Function,
+    },
     data: function () {
         return {
             form: this.$form.createForm(this),
@@ -59,7 +64,14 @@ export default {
                     return;
                 }
 
-                await client.startProcess(values.url, values.categoryId, values.imagePath);
+                const data = await client.startProcess(values.url, values.categoryId, values.imagePath);
+                if (null !== data.error) {
+                    this.loadError(data.error);
+
+                    return;
+                }
+
+                this.updateState(data.result);
             });
         },
     }

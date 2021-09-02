@@ -1,16 +1,23 @@
 <template>
-    <div id="main">
-        <a-spin :spinning="loading">
-            <a-tabs default-active-key="1">
-                <a-tab-pane key="1" tab="Настройка">
-                    <Settings/>
-                </a-tab-pane>
-                <a-tab-pane key="2" tab="Прогресс">
-                    <Progress/>
-                </a-tab-pane>
-            </a-tabs>
-        </a-spin>
-    </div>
+    <a-row id="main">
+        <a-col>
+            <a-spin :spinning="loading">
+                <Settings
+                    v-if="tabs.settings"
+
+                    :state="state"
+                    :updateState="updateState"
+                    :updateError="updateError"
+                />
+                <Progress
+                    v-if="tabs.progress"
+
+                    :state="state"
+                    :updateState="updateState"
+                />
+            </a-spin>
+        </a-col>
+    </a-row>
 </template>
 
 <script>
@@ -31,23 +38,41 @@ export default {
     created: function () {
         this.loadState();
     },
+    computed: {
+        tabs: function () {
+            return {
+                settings: this.state.step === 'not-running',
+                progress: this.state.step !== 'not-running',
+            };
+        },
+    },
     methods: {
         updateState: function (state) {
             this.state = state;
-            if ('initialization' === state.step && 'process' === state.step) {
+            this.loading = false;
+            if ('error' === state.step) {
+                this.$message.error(state.message);
+
+                return;
+            }
+
+            if ('initialization' === state.step || 'process' === state.step) {
                 setTimeout(this.loadState, 1000);
             }
         },
         loadState: async function () {
-            const {data} = await client.getProcessState();
-            this.loading = false;
+            const data = await client.getProcessState();
             if (null !== data.error) {
-                console.log(data.error);
+                this.updateError(data.error);
 
                 return;
             }
 
             this.updateState(data.result);
+        },
+        updateError: function (error) {
+            console.log(error);
+            this.$message.error('Произошла ошибка');
         }
     }
 }
